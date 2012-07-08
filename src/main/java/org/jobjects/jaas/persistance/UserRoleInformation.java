@@ -3,8 +3,27 @@ package org.jobjects.jaas.persistance;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Mickael
+ * 
+ */
 public interface UserRoleInformation {
-	boolean init(Map<String, ?> options); 
-	boolean isValidUser(String login, char[]password);
-	List<String> getRoles();
+	/**
+	 * @param options
+	 * @return
+	 */
+	boolean init(Map<String, ?> options);
+
+	/**
+	 * @param login
+	 * @param password
+	 * @return
+	 */
+	boolean isValidUser(String login, char[] password);
+
+	/**
+	 * @param login
+	 * @return
+	 */
+	List<String> getRoles(String login);
 }
