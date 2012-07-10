@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.security.auth.login.LoginException;
@@ -63,44 +64,33 @@ public class UserRoleInformationJDBC implements UserRoleInformation {
 	 */
 	@Override
 	public boolean isValidUser(String login, char[] password) {
-		String sql = userQuery;
-		Connection con = null;
-		ResultSet rs = null;
-		PreparedStatement stmt = null;
-
+		boolean returnValue=false;
 		try {
-			con = getConnection();
-			stmt = con.prepareStatement(sql);
-			stmt.setString(1, login);
-			stmt.setString(2, new String(password));
-
-			rs = stmt.executeQuery();
-
-			if (rs.next()) { // User exist with the given user name and
-								// password.
-				return true;
-			}
-		} catch (Exception e) {
-			LOGGER.severe("Error when loading user from the database " + e);
-			e.printStackTrace();
-		} finally {
+			Connection connection =getConnection();
 			try {
-				rs.close();
-			} catch (SQLException e) {
-				LOGGER.severe("Error when closing result set." + e);
+				PreparedStatement ptmt = connection.prepareStatement(userQuery);
+				try {
+					ptmt.setString(1, login);
+					ptmt.setString(2, new String(password));
+					ResultSet rs = ptmt.executeQuery();
+					try {
+						if (rs.next()) {
+							returnValue = true;
+						}
+					} finally {
+						rs.close();
+					}
+				} finally {
+					ptmt.close();
+				}
+			} finally {
+				connection.close();
 			}
-			try {
-				stmt.close();
-			} catch (SQLException e) {
-				LOGGER.severe("Error when closing statement." + e);
-			}
-			try {
-				con.close();
-			} catch (SQLException e) {
-				LOGGER.severe("Error when closing connection." + e);
-			}
+		} catch (SQLException e) {
+			LOGGER.log(Level.SEVERE, "Error when loading user from the database", e);
+			returnValue=false;
 		}
-		return false;
+		return returnValue;
 	}
 
 	/*
@@ -110,44 +100,31 @@ public class UserRoleInformationJDBC implements UserRoleInformation {
 	 */
 	@Override
 	public List<String> getRoles(String login) {
-		Connection con = null;
-		ResultSet rs = null;
-		PreparedStatement stmt = null;
-
-		List<String> roleList = new ArrayList<String>();
-
+		List<String> returnValue = new ArrayList<String>();
 		try {
-			con = getConnection();
-			String sql = roleQuery;
-			stmt = con.prepareStatement(sql);
-			stmt.setString(1, login);
-
-			rs = stmt.executeQuery();
-
-			if (rs.next()) {
-				roleList.add(rs.getString("rolename"));
-			}
-		} catch (Exception e) {
-			LOGGER.severe("Error when loading user from the database " + e);
-			e.printStackTrace();
-		} finally {
+			Connection connection =getConnection();
 			try {
-				rs.close();
-			} catch (SQLException e) {
-				LOGGER.severe("Error when closing result set." + e);
+				PreparedStatement ptmt = connection.prepareStatement(roleQuery);
+				try {
+					ptmt.setString(1, login);
+					ResultSet rs = ptmt.executeQuery();
+					try {
+						while (rs.next()) {
+							returnValue.add(rs.getString("rolename"));
+						}
+					} finally {
+						rs.close();
+					}
+				} finally {
+					ptmt.close();
+				}
+			} finally {
+				connection.close();
 			}
-			try {
-				stmt.close();
-			} catch (SQLException e) {
-				LOGGER.severe("Error when closing statement." + e);
-			}
-			try {
-				con.close();
-			} catch (SQLException e) {
-				LOGGER.severe("Error when closing connection." + e);
-			}
+		} catch (SQLException e) {
+			LOGGER.log(Level.SEVERE, "Error when loading role of user from the database", e);
 		}
-		return roleList;
+		return returnValue;
 	}
 
 	/**
@@ -156,18 +133,17 @@ public class UserRoleInformationJDBC implements UserRoleInformation {
 	 * @return
 	 * @throws LoginException
 	 */
-	private Connection getConnection() throws LoginException {
-		Connection con = null;
+	private Connection getConnection() throws SQLException {
+		Connection connection = null;
 		try {
 			// loading driver
 			Class.forName(dBDriver).newInstance();
-			con = DriverManager.getConnection(dBUrl, dBUser, dBPassword);
+			connection = DriverManager.getConnection(dBUrl, dBUser, dBPassword);
 		} catch (Exception e) {
-			LOGGER.severe("Error when creating database connection" + e);
-			e.printStackTrace();
-		} finally {
+			LOGGER.log(Level.SEVERE, "Error when creating database connection", e);
+			throw new SQLException(e);
 		}
-		return con;
+		return connection;
 	}
 
 }
