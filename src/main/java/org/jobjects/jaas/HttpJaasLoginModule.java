@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.security.auth.Subject;
@@ -68,8 +69,12 @@ public class HttpJaasLoginModule implements LoginModule {
 		this.callbackHandler = callbackHandler;
 		this.sharedState = sharedState;
 		this.options = options;
+		finest = "true".equalsIgnoreCase((String) options.get("finest"));
 
-		{
+		/*
+		 * Log des options partagées
+		 */
+		if(finest) {
 			StringBuffer sb = new StringBuffer();
 			sb.append("Jaas sharedState" + "\n");
 			Set<String> keys = this.sharedState.keySet();
@@ -78,7 +83,10 @@ public class HttpJaasLoginModule implements LoginModule {
 			}
 			LOGGER.finest(sb.toString());
 		}
-		{
+		/*
+		 * Logs des options de configuration
+		 */
+		if(finest) {
 			StringBuffer sb = new StringBuffer();
 			sb.append("Jaas options" + "\n");
 			Set<String> keys = this.options.keySet();
@@ -88,11 +96,7 @@ public class HttpJaasLoginModule implements LoginModule {
 			LOGGER.finest(sb.toString());
 		}
 
-		PersistanceSelector persistanceSelector = new PersistanceSelector();
-		userRoleInformation = persistanceSelector
-				.getUserRoleInformation(options);
-
-		finest = "true".equalsIgnoreCase((String) options.get("finest"));
+		userRoleInformation = PersistanceSelector.getInstance().getUserRoleInformation(options);
 	}
 
 	@Override
@@ -130,9 +134,9 @@ public class HttpJaasLoginModule implements LoginModule {
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		} catch (UnsupportedCallbackException e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 
 		return false;

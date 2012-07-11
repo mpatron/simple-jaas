@@ -3,6 +3,10 @@
  */
 package org.jobjects.jaas;
 
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,16 +24,13 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.security.auth.login.LoginException;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -90,6 +91,10 @@ public class HttpJaasLoginModuleTest {
 				sql += " )";
 				stmt.execute(sql);
 				stmt.execute("ALTER TABLE MyDerbyDB.secu_user_role ADD PRIMARY KEY (username, rolename)");
+				stmt.execute("INSERT INTO MYDERBYDB.SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'tomcat')");
+				stmt.execute("INSERT INTO MYDERBYDB.SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'admin')");
+				stmt.execute("INSERT INTO MYDERBYDB.SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'root')");
+				stmt.execute("INSERT INTO MYDERBYDB.SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'dieu')");
 				stmt.close();
 			}
 
@@ -145,8 +150,8 @@ public class HttpJaasLoginModuleTest {
 	public void testInitialize() {
 
 		try {
-			doAnswer(new Answer() {
-				  public Object answer(InvocationOnMock invocation) {
+			doAnswer(new Answer<Void>() {
+				  public Void answer(InvocationOnMock invocation) {
 				      
 					  Object[] args = invocation.getArguments();
 				      Callback[] callbacks = (Callback[])args[0];
@@ -165,6 +170,7 @@ public class HttpJaasLoginModuleTest {
 		}
 				
 		options = new HashMap<String, String>();
+		options.put("persistanceMode", "ONLY_TRUE");
 		options.put("dbDriver", "org.apache.derby.jdbc.EmbeddedDriver");
 		options.put("dbURL", "jdbc:derby:memory:MyDerbyDB;upgrade=true");
 		options.put("dbUser", "sa");
@@ -179,21 +185,78 @@ public class HttpJaasLoginModuleTest {
 	/**
 	 * Test method for {@link org.jobjects.jaas.HttpJaasLoginModule#login()}.
 	 */
-	@Test(/*timeout=1000*/)
-	public void testLogin() {
+	@Test(timeout=1000)
+	public void testLoginFalse() {
 
-
-
-		//when(callbackHandler.handle(   (Callback[])anyObject()              )).thenReturn("element");
-		//instance.initialize(subject, callbackHandler, sharedState, options);
 		try {
-			instance.login();
-		} catch (LoginException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			doAnswer(new Answer<Void>() {
+				  public Void answer(InvocationOnMock invocation) {
+				      
+					  Object[] args = invocation.getArguments();
+				      Callback[] callbacks = (Callback[])args[0];
+				      ((NameCallback)callbacks[0]).setName("mon nom"); 
+				      ((PasswordCallback)callbacks[1]).setPassword("password".toCharArray());
+				      
+				      //Mock mock = (Mock) invocation.getMock();
+				      return null;
+				  }}).when(callbackHandler).handle(any(Callback[].class));
+
+			options = new HashMap<String, String>();
+			options.put("persistanceMode", "ONLY_TRUE");
+			options.put("dbDriver", "org.apache.derby.jdbc.EmbeddedDriver");
+			options.put("dbURL", "jdbc:derby:memory:MyDerbyDB;upgrade=true");
+			options.put("dbUser", "sa");
+			options.put("dbPassword", "manager");
+			options.put("userQuery", "select username from MyDerbyDB.secu_user u where u.username=? and u.password=?");
+			options.put("roleQuery", "select r.rolename from MyDerbyDB.secu_user u, MyDerbyDB.secu_user_role r where u.username=r.username and u.username=?");
+			options.put("debug", "true");
+			
+			instance.initialize(subject, callbackHandler, sharedState, options);		
+			Assert.assertFalse(instance.login()) ;			
+		} catch (Exception e1) {			
+			e1.printStackTrace();
+			fail(e1.getLocalizedMessage());
 		}
 	}
 
+	/**
+	 * Test method for {@link org.jobjects.jaas.HttpJaasLoginModule#login()}.
+	 */
+	@Test(timeout=1000)
+	public void testLoginTrue() {
+
+		try {
+			doAnswer(new Answer<Void>() {
+				  public Void answer(InvocationOnMock invocation) {
+				      
+					  Object[] args = invocation.getArguments();
+				      Callback[] callbacks = (Callback[])args[0];
+				      ((NameCallback)callbacks[0]).setName("mon nom"); 
+				      ((PasswordCallback)callbacks[1]).setPassword("password".toCharArray());
+				      
+				      //Mock mock = (Mock) invocation.getMock();
+				      return null;
+				  }}).when(callbackHandler).handle(any(Callback[].class));
+
+			options = new HashMap<String, String>();
+			options.put("persistanceMode", "ONLY_TRUE");
+			options.put("dbDriver", "org.apache.derby.jdbc.EmbeddedDriver");
+			options.put("dbURL", "jdbc:derby:memory:MyDerbyDB;upgrade=true");
+			options.put("dbUser", "sa");
+			options.put("dbPassword", "manager");
+			options.put("userQuery", "select username from MyDerbyDB.secu_user u where u.username=? and u.password=?");
+			options.put("roleQuery", "select r.rolename from MyDerbyDB.secu_user u, MyDerbyDB.secu_user_role r where u.username=r.username and u.username=?");
+			options.put("debug", "true");
+			
+			instance.initialize(subject, callbackHandler, sharedState, options);		
+			Assert.assertFalse(instance.login()) ;			
+		} catch (Exception e1) {			
+			e1.printStackTrace();
+			fail(e1.getLocalizedMessage());
+		}
+	}
+	
+	
 	/**
 	 * Test method for {@link org.jobjects.jaas.HttpJaasLoginModule#commit()}.
 	 */

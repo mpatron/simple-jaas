@@ -3,7 +3,7 @@
  */
 package org.jobjects.jaas.persistance.jdbc;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,7 +24,7 @@ import org.junit.Test;
 
 /**
  * @author Mickael
- *
+ * 
  */
 public class UserRoleInformationJDBCTest {
 
@@ -41,48 +41,52 @@ public class UserRoleInformationJDBCTest {
 			p.setProperty("password", "manager");
 			p.setProperty("create", "true");
 
-			Connection conn = DriverManager.getConnection("jdbc:derby:memory:MyDerbyDB", p);
-			
+			Connection conn = DriverManager.getConnection(
+					"jdbc:derby:memory:MyDerbyDB", p);
+
 			{
 				Statement stmt = conn.createStatement();
-				String sql = "CREATE TABLE MyDerbyDB.MyTable (";
-				sql += " MonChampsTexte VARCHAR(6) NOT NULL,";
-				sql += " MonChampsChar CHAR(2) NOT NULL,";
-				sql += " MonChampsDate DATE,";
-				sql += " MonChampsDateTime TIMESTAMP,";
-				sql += " MonChampsDecimal DOUBLE";
+				String sql = "CREATE TABLE MYDERBYDB.MYTABLE (";
+				sql += " MONCHAMPSTEXTE VARCHAR(6) NOT NULL,";
+				sql += " MONCHAMPSCHAR CHAR(2) NOT NULL,";
+				sql += " MONCHAMPSDATE DATE,";
+				sql += " MONCHAMPSDATETIME TIMESTAMP,";
+				sql += " MONCHAMPSDECIMAL DOUBLE";
 				sql += " )";
 				stmt.execute(sql);
-				stmt.execute("ALTER TABLE MyDerbyDB.MyTable ADD PRIMARY KEY (MonChampsTexte, MonChampsChar)");
-				stmt.close();
-			}
-			
-			{
-				Statement stmt = conn.createStatement();
-				String sql = "CREATE TABLE MyDerbyDB.secu_user (";
-				sql += " username VARCHAR(255) NOT NULL,";
-				sql += " password VARCHAR(255),";
-				sql += " MonChampsDateTime TIMESTAMP";
-				sql += " )";
-				stmt.execute(sql);
-				stmt.execute("ALTER TABLE MyDerbyDB.secu_user ADD PRIMARY KEY (username)");
-				stmt.execute("insert into MyDerbyDB.secu_user (username, password) values ('myName', 'myPassword')");
+				stmt.execute("ALTER TABLE MYDERBYDB.MYTABLE ADD PRIMARY KEY (MONCHAMPSTEXTE, MONCHAMPSCHAR)");
 				stmt.close();
 			}
 
 			{
 				Statement stmt = conn.createStatement();
-				String sql = "CREATE TABLE MyDerbyDB.secu_user_role (";
-				sql += " username VARCHAR(255) NOT NULL,";
-				sql += " rolename VARCHAR(255) NOT NULL,";
-				sql += " MonChampsDateTime TIMESTAMP";
+				String sql = "CREATE TABLE MYDERBYDB.SECU_USER (";
+				sql += " USERNAME VARCHAR(255) NOT NULL,";
+				sql += " PASSWORD VARCHAR(255),";
+				sql += " MONCHAMPSDATETIME TIMESTAMP";
+				sql += " )";
+				stmt.execute(sql);
+				stmt.execute("ALTER TABLE MYDERBYDB.SECU_USER ADD PRIMARY KEY (username)");
+				stmt.execute("INSERT INTO MYDERBYDB.SECU_USER (USERNAME, PASSWORD) VALUES ('myName', 'myPassword')");
+				stmt.close();
+			}
+
+			{
+				Statement stmt = conn.createStatement();
+				String sql = "CREATE TABLE MYDERBYDB.SECU_USER_ROLE (";
+				sql += " USERNAME VARCHAR(255) NOT NULL,";
+				sql += " ROLENAME VARCHAR(255) NOT NULL,";
+				sql += " MONCHAMPSDATETIME TIMESTAMP";
 				sql += " )";
 				stmt.execute(sql);
 				stmt.execute("ALTER TABLE MyDerbyDB.secu_user_role ADD PRIMARY KEY (username, rolename)");
+				stmt.execute("INSERT INTO MYDERBYDB.SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'tomcat')");
+				stmt.execute("INSERT INTO MYDERBYDB.SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'admin')");
+				stmt.execute("INSERT INTO MYDERBYDB.SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'root')");
+				stmt.execute("INSERT INTO MYDERBYDB.SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'dieu')");
 				stmt.close();
 			}
 
-			
 			final ResultSet tables = conn.getMetaData().getTables(null, null,
 					"%", new String[] { "TABLE" });
 			List<String> tableNames = new ArrayList<String>();
@@ -103,10 +107,10 @@ public class UserRoleInformationJDBCTest {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		try {
-			 DriverManager.getConnection("jdbc:derby:memory:MyDerbyDB;shutdown=true");
-			//DriverManager.getConnection("jdbc:derby:;shutdown=true");
+			// DriverManager.getConnection("jdbc:derby:memory:MyDerbyDB;shutdown=true");
+			System.out.println("Extinction de Derby");
+			DriverManager.getConnection("jdbc:derby:;shutdown=true");
 		} catch (Exception ignored) {
-			ignored.printStackTrace();
 		}
 	}
 
@@ -125,7 +129,9 @@ public class UserRoleInformationJDBCTest {
 	}
 
 	/**
-	 * Test method for {@link org.jobjects.jaas.persistance.jdbc.UserRoleInformationJDBC#UserRoleInformationJDBC()}.
+	 * Test method for
+	 * {@link org.jobjects.jaas.persistance.jdbc.UserRoleInformationJDBC#UserRoleInformationJDBC()}
+	 * .
 	 */
 	@Test
 	public void testUserRoleInformationJDBC() {
@@ -134,7 +140,9 @@ public class UserRoleInformationJDBCTest {
 	}
 
 	/**
-	 * Test method for {@link org.jobjects.jaas.persistance.jdbc.UserRoleInformationJDBC#init(java.util.Map)}.
+	 * Test method for
+	 * {@link org.jobjects.jaas.persistance.jdbc.UserRoleInformationJDBC#init(java.util.Map)}
+	 * .
 	 */
 	@Test
 	public void testInit() {
@@ -143,17 +151,23 @@ public class UserRoleInformationJDBCTest {
 		options.put("dbURL", "jdbc:derby:memory:MyDerbyDB;upgrade=true");
 		options.put("dbUser", "sa");
 		options.put("dbPassword", "manager");
-		options.put("userQuery", "select username from MyDerbyDB.secu_user u where u.username=? and u.password=?");
-		options.put("roleQuery", "select r.rolename from MyDerbyDB.secu_user u, MyDerbyDB.secu_user_role r where u.username=r.username and u.username=?");
+		options.put(
+				"userQuery",
+				"select username from MyDerbyDB.secu_user u where u.username=? and u.password=?");
+		options.put(
+				"roleQuery",
+				"select r.rolename from MyDerbyDB.secu_user u, MyDerbyDB.secu_user_role r where u.username=r.username and u.username=?");
 		options.put("debug", "true");
 
 		UserRoleInformationJDBC instance = new UserRoleInformationJDBC();
 		Assert.assertTrue(instance.init(options));
-		
+
 	}
 
 	/**
-	 * Test method for {@link org.jobjects.jaas.persistance.jdbc.UserRoleInformationJDBC#isValidUser(java.lang.String, char[])}.
+	 * Test method for
+	 * {@link org.jobjects.jaas.persistance.jdbc.UserRoleInformationJDBC#isValidUser(java.lang.String, char[])}
+	 * .
 	 */
 	@Test
 	public void testIsValidUser() {
@@ -162,17 +176,24 @@ public class UserRoleInformationJDBCTest {
 		options.put("dbURL", "jdbc:derby:memory:MyDerbyDB;upgrade=true");
 		options.put("dbUser", "sa");
 		options.put("dbPassword", "manager");
-		options.put("userQuery", "select username from MyDerbyDB.secu_user u where u.username=? and u.password=?");
-		options.put("roleQuery", "select r.rolename from MyDerbyDB.secu_user u, MyDerbyDB.secu_user_role r where u.username=r.username and u.username=?");
+		options.put(
+				"userQuery",
+				"select username from MyDerbyDB.secu_user u where u.username=? and u.password=?");
+		options.put(
+				"roleQuery",
+				"select r.rolename from MyDerbyDB.secu_user u, MyDerbyDB.secu_user_role r where u.username=r.username and u.username=?");
 		options.put("debug", "true");
 
 		UserRoleInformationJDBC instance = new UserRoleInformationJDBC();
 		Assert.assertTrue(instance.init(options));
-		Assert.assertTrue(instance.isValidUser("myName", "myPassword".toCharArray()));
+		Assert.assertTrue(instance.isValidUser("myName",
+				"myPassword".toCharArray()));
 	}
 
 	/**
-	 * Test method for {@link org.jobjects.jaas.persistance.jdbc.UserRoleInformationJDBC#getRoles(java.lang.String)}.
+	 * Test method for
+	 * {@link org.jobjects.jaas.persistance.jdbc.UserRoleInformationJDBC#getRoles(java.lang.String)}
+	 * .
 	 */
 	@Test
 	public void testGetRoles() {
@@ -181,13 +202,17 @@ public class UserRoleInformationJDBCTest {
 		options.put("dbURL", "jdbc:derby:memory:MyDerbyDB;upgrade=true");
 		options.put("dbUser", "sa");
 		options.put("dbPassword", "manager");
-		options.put("userQuery", "select username from MyDerbyDB.secu_user u where u.username=? and u.password=?");
-		options.put("roleQuery", "select r.rolename from MyDerbyDB.secu_user u, MyDerbyDB.secu_user_role r where u.username=r.username and u.username=?");
+		options.put(
+				"userQuery",
+				"select username from MyDerbyDB.secu_user u where u.username=? and u.password=?");
+		options.put(
+				"roleQuery",
+				"select r.rolename from MyDerbyDB.secu_user u, MyDerbyDB.secu_user_role r where u.username=r.username and u.username=?");
 		options.put("debug", "true");
 
 		UserRoleInformationJDBC instance = new UserRoleInformationJDBC();
-		Assert.assertTrue(instance.init(options));		
-		Assert.assertTrue(instance.getRoles("myName").size()>0);
+		Assert.assertTrue(instance.init(options));
+		Assert.assertTrue(instance.getRoles("myName").size() > 0);
 	}
 
 }
