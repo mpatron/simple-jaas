@@ -24,6 +24,7 @@ public class LoginContextTest {
 		 */
 		
 		System.setProperty("java.security.auth.login.config", ""+ClassLoader.getSystemResource("login.config"));
+		//System.setProperty("java.util.logging.config.file", ""+ClassLoader.getSystemResource("logging.properties"));
 	}
 
 	/**
@@ -35,6 +36,9 @@ public class LoginContextTest {
 	public void testLogin() {
 		try {
 			Assert.assertNotNull(System.getProperty("java.security.auth.login.config"));
+			Assert.assertNotNull(System.getProperty("java.util.logging.config.file"));
+			System.out.println(""+System.getProperty("java.security.auth.login.config"));
+			System.out.println(""+System.getProperty("java.util.logging.config.file"));
 			Parameters parameters=Configuration.getConfiguration().getParameters();
 			System.out.println("parameters="+parameters);
 			String name = "myName";

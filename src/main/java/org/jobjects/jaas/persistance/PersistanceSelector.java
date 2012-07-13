@@ -19,7 +19,7 @@ public class PersistanceSelector {
 	private UserRoleInformation userRoleInformation=null;
 	
 	public synchronized UserRoleInformation getUserRoleInformation(Map<String, ?> options) {
-		if(userRoleInformation==null) {
+		//if(userRoleInformation==null) {
 			String persistanceMode= (String) options.get("persistanceMode");
 			if("JDBC".equals(persistanceMode)) {
 				userRoleInformation=new UserRoleInformationJDBC();
@@ -27,7 +27,7 @@ public class PersistanceSelector {
 				userRoleInformation=new UserRoleInformationOnlyTrue();
 			}
 			userRoleInformation.init(options);
-		}
+		//}
 		return userRoleInformation;
 	}
 }
