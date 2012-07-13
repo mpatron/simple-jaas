@@ -96,7 +96,10 @@ public class HttpJaasLoginModule implements LoginModule {
 			LOGGER.finest(sb.toString());
 		}
 
-		userRoleInformation = PersistanceSelector.getInstance().getUserRoleInformation(options);
+		if(userRoleInformation==null) {
+			PersistanceSelector persistanceSelector = new PersistanceSelector();
+			userRoleInformation = persistanceSelector.getUserRoleInformation(options);
+		}
 	}
 
 	@Override
@@ -210,5 +213,14 @@ public class HttpJaasLoginModule implements LoginModule {
 		userPrincipal = null;
 		return true;
 	}
+
+	public UserRoleInformation getUserRoleInformation() {
+		return userRoleInformation;
+	}
+
+	public void setUserRoleInformation(UserRoleInformation userRoleInformation) {
+		this.userRoleInformation = userRoleInformation;
+	}
+
 
 }

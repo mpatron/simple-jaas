@@ -24,7 +24,8 @@ public class LoginContextTest {
 		 */
 		
 		System.setProperty("java.security.auth.login.config", ""+ClassLoader.getSystemResource("login.config"));
-		//System.setProperty("java.util.logging.config.file", ""+ClassLoader.getSystemResource("logging.properties"));
+		System.setProperty("java.util.logging.config.file", ""+ClassLoader.getSystemResource("logging.properties").getPath()
+				);
 	}
 
 	/**

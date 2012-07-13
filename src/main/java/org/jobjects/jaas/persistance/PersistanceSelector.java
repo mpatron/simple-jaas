@@ -7,27 +7,18 @@ import org.jobjects.jaas.persistance.testing.UserRoleInformationOnlyTrue;
 
 public class PersistanceSelector {
 
-	private PersistanceSelector() {		
+	public PersistanceSelector() {		
 	}
 	
-	private static PersistanceSelector instance= new PersistanceSelector();
-	
-	public static PersistanceSelector getInstance(){
-		return instance;
-	}
-	
-	private UserRoleInformation userRoleInformation=null;
-	
-	public synchronized UserRoleInformation getUserRoleInformation(Map<String, ?> options) {
-		//if(userRoleInformation==null) {
+	public UserRoleInformation getUserRoleInformation(Map<String, ?> options) {
+		UserRoleInformation returnValue=null;
 			String persistanceMode= (String) options.get("persistanceMode");
 			if("JDBC".equals(persistanceMode)) {
-				userRoleInformation=new UserRoleInformationJDBC();
+				returnValue=new UserRoleInformationJDBC();
 			} else if("ONLY_TRUE".equals(persistanceMode)) {
-				userRoleInformation=new UserRoleInformationOnlyTrue();
+				returnValue=new UserRoleInformationOnlyTrue();
 			}
-			userRoleInformation.init(options);
-		//}
-		return userRoleInformation;
+			returnValue.init(options);
+		return returnValue;
 	}
 }
