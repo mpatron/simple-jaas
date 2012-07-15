@@ -170,7 +170,7 @@ public class UserRoleInformationJDBCTest {
 	 * .
 	 */
 	@Test
-	public void testIsValidUser() {
+	public void testIsValidUserTrue() {
 		HashMap<String, String> options = new HashMap<String, String>();
 		options.put("dbDriver", "org.apache.derby.jdbc.EmbeddedDriver");
 		options.put("dbURL", "jdbc:derby:memory:MyDerbyDB;upgrade=true");
@@ -187,6 +187,32 @@ public class UserRoleInformationJDBCTest {
 		UserRoleInformationJDBC instance = new UserRoleInformationJDBC();
 		Assert.assertTrue(instance.init(options));
 		Assert.assertTrue(instance.isValidUser("myName",
+				"myPassword".toCharArray()));
+	}
+
+	/**
+	 * Test method for
+	 * {@link org.jobjects.jaas.persistance.jdbc.UserRoleInformationJDBC#isValidUser(java.lang.String, char[])}
+	 * .
+	 */
+	@Test
+	public void testIsValidUserFalse() {
+		HashMap<String, String> options = new HashMap<String, String>();
+		options.put("dbDriver", "org.apache.derby.jdbc.EmbeddedDriver");
+		options.put("dbURL", "jdbc:derby:memory:MyDerbyDB;upgrade=true");
+		options.put("dbUser", "sa");
+		options.put("dbPassword", "manager");
+		options.put(
+				"userQuery",
+				"select username from MyDerbyDB.secu_user u where u.username=? and u.password=?");
+		options.put(
+				"roleQuery",
+				"select r.rolename from MyDerbyDB.secu_user u, MyDerbyDB.secu_user_role r where u.username=r.username and u.username=?");
+		options.put("debug", "true");
+
+		UserRoleInformationJDBC instance = new UserRoleInformationJDBC();
+		Assert.assertTrue(instance.init(options));
+		Assert.assertFalse(instance.isValidUser("myNameFalse",
 				"myPassword".toCharArray()));
 	}
 

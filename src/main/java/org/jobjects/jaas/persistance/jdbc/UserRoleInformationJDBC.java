@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.security.auth.login.LoginException;
-
 import org.jobjects.jaas.persistance.UserRoleInformation;
 
 /**
@@ -131,7 +129,7 @@ public class UserRoleInformationJDBC implements UserRoleInformation {
 	 * Returns JDBC connection
 	 * 
 	 * @return
-	 * @throws LoginException
+	 * @throws SQLException
 	 */
 	private Connection getConnection() throws SQLException {
 		Connection connection = null;

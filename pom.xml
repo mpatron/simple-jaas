@@ -90,8 +90,9 @@
 								<configLocation>config/sun_checks.xml</configLocation>
 								<configLocation>config/maven_checks.xml</configLocation>
 								<configLocation>file:///D:/ProjetsJava/JValidation/src/test/resources/mp_checks.xml</configLocation>
-							 -->
 								<configLocation>mp_checks.xml</configLocation>
+							 -->
+							 <configLocation>config/maven_checks.xml</configLocation>
 								
 							</configuration>
 						</plugin>
