@@ -12,3 +12,6 @@
 
 # Maven 
 target
+
+#Derby
+derby.log

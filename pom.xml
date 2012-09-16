@@ -8,7 +8,7 @@
 	<description>JAAS Personnal</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<compileSource>1.6</compileSource>
+		<compileSource>1.7</compileSource>
 	</properties>
 	<developers>
 		<developer>
@@ -36,14 +36,14 @@
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
-			<version>10.9.1.0</version>
+			<version>[10.9.1.0,)</version>
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derbyLocale_fr</artifactId>
-			<version>10.9.1.0</version>
+			<version>[10.9.1.0,)</version>
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
