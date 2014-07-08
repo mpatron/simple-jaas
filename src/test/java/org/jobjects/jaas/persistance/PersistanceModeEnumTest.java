@@ -3,9 +3,11 @@ package org.jobjects.jaas.persistance;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.logging.Logger;
 
 import junit.framework.Assert;
 
+import org.jobjects.jaas.HttpJaasLoginModuleTest;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -13,6 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class PersistanceModeEnumTest {
+	private static Logger LOGGER = Logger.getLogger(PersistanceModeEnumTest.class.getName());
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -31,7 +34,8 @@ public class PersistanceModeEnumTest {
 	}
 
 	@Test
-	public void test() {
+	public void testContains() {
+		LOGGER.finest("Test type de persistance.");
 		List<String> valeurs=Arrays.asList("JDBC","ONLY_TRUE","ONLY_FALSE");
 		EnumSet<PersistanceModeEnum> ee = EnumSet.allOf(PersistanceModeEnum.class);
 		Assert.assertTrue("Il doit y avoir plusieur type.", ee.size()>0);

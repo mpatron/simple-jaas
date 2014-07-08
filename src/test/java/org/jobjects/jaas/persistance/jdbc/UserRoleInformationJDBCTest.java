@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import junit.framework.Assert;
 
@@ -27,12 +29,14 @@ import org.junit.Test;
  * 
  */
 public class UserRoleInformationJDBCTest {
-
+	private static Logger LOGGER = Logger.getLogger(UserRoleInformationJDBCTest.class.getName());
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		LOGGER.finest("=================== DERBY starting =====================");
 		try {
 			String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 			Class.forName(driver).newInstance();
@@ -44,6 +48,8 @@ public class UserRoleInformationJDBCTest {
 			Connection conn = DriverManager.getConnection(
 					"jdbc:derby:memory:MyDerbyDB", p);
 
+			LOGGER.finest("=================== DERBY started =====================");
+			
 			{
 				Statement stmt = conn.createStatement();
 				String sql = "CREATE TABLE MYDERBYDB.MYTABLE (";
@@ -96,7 +102,7 @@ public class UserRoleInformationJDBCTest {
 
 			conn.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE,"Erreur pendant le chargement de DERBY.",e);
 			fail(e.getMessage());
 		}
 	}
@@ -108,7 +114,7 @@ public class UserRoleInformationJDBCTest {
 	public static void tearDownAfterClass() throws Exception {
 		try {
 			// DriverManager.getConnection("jdbc:derby:memory:MyDerbyDB;shutdown=true");
-			System.out.println("Extinction de Derby");
+			LOGGER.finest("=================== DERBY ended =====================");
 			DriverManager.getConnection("jdbc:derby:;shutdown=true");
 		} catch (Exception ignored) {
 		}

@@ -10,6 +10,7 @@ import static org.mockito.Mockito.doAnswer;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
@@ -35,6 +36,8 @@ import org.mockito.stubbing.Answer;
 @RunWith(MockitoJUnitRunner.class)
 public class HttpJaasLoginModuleTest {
 
+	private static Logger LOGGER = Logger.getLogger(HttpJaasLoginModuleTest.class.getName());
+
 	HttpJaasLoginModule instance= new HttpJaasLoginModule (); 
 	@Mock private CallbackHandler callbackHandler;
 	private Subject subject = new Subject();
@@ -48,7 +51,7 @@ public class HttpJaasLoginModuleTest {
 	 */
 	@Test
 	public void testInitialize() {
-
+		LOGGER.finest("HttpJaasLoginModuleTest#testInitialize");
 		try {
 			doAnswer(new Answer<Void>() {
 				  public Void answer(InvocationOnMock invocation) {

@@ -53,6 +53,12 @@
 			<version>1.9.0</version>
 			<scope>test</scope>
 		</dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.1</version>
+      <scope>compile</scope>
+    </dependency>
 	</dependencies>
 
 	<build>
@@ -65,6 +71,30 @@
 					<source>${compileSource}</source>
 					<target>${compileSource}</target>
 
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<version>2.10</version>
+				<configuration>
+					<argLine>-Xms128m -Xmx256m -XX:PermSize=128m -XX:MaxPermSize=256m</argLine>
+					<parallel>false</parallel>
+					<!--
+					<suiteXmlFiles>
+						<suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+					</suiteXmlFiles>
+					-->
+					<systemProperties>
+						<property>
+							<name>java.util.logging.config.file</name>
+							<value>${basedir}/src/test/resources/logging.properties</value>
+						</property>
+						<property>
+							<name>derby.stream.error.file</name>
+							<value>${basedir}/target/derby.log</value>
+						</property>
+					</systemProperties>
 				</configuration>
 			</plugin>
 			<plugin>

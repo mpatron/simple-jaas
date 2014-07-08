@@ -2,6 +2,7 @@ package org.jobjects.jaas.persistance;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import junit.framework.Assert;
 
@@ -13,7 +14,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class PersistanceSelectorTest {
-
+	private static Logger LOGGER = Logger.getLogger(PersistanceSelectorTest.class.getName());
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
@@ -32,6 +34,7 @@ public class PersistanceSelectorTest {
 
 	@Test
 	public void testGetUserRoleInformation() {
+		LOGGER.finest("Test de la récupération de donnée en fonction de la selection du mode de persistance.");
 		UserRoleInformation uri;
 		
 		Map<String,Object> options = new HashMap<String,Object>();

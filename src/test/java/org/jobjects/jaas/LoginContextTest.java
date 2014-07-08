@@ -4,17 +4,20 @@ import static org.junit.Assert.fail;
 
 import java.security.Principal;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import javax.security.auth.login.Configuration;
 import javax.security.auth.login.Configuration.Parameters;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
+import org.jobjects.jaas.persistance.PersistanceSelectorTest;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class LoginContextTest {
+	private static Logger LOGGER = Logger.getLogger(LoginContextTest.class.getName());
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -35,6 +38,7 @@ public class LoginContextTest {
 	 */
 	@Test
 	public void testLogin() {
+		LOGGER.finest("test JAAS du callback de login.");
 		try {
 			Assert.assertNotNull(System.getProperty("java.security.auth.login.config"));
 			Assert.assertNotNull(System.getProperty("java.util.logging.config.file"));
