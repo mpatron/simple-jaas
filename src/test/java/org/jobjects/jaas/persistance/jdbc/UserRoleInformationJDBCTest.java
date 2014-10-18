@@ -37,21 +37,17 @@ public class UserRoleInformationJDBCTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		LOGGER.finest("=================== DERBY starting =====================");
-		try {
-			String driver = "org.apache.derby.jdbc.EmbeddedDriver";
-			Class.forName(driver).newInstance();
-			Properties p = new Properties();
-			p.setProperty("user", "sa");
-			p.setProperty("password", "manager");
-			p.setProperty("create", "true");
-
-			Connection conn = DriverManager.getConnection(
-					"jdbc:derby:memory:MyDerbyDB", p);
+    String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+    Class.forName(driver).newInstance();
+    Properties p = new Properties();
+    p.setProperty("user", "sa");
+    p.setProperty("password", "manager");
+    p.setProperty("create", "true");
+    
+		try (Connection conn = DriverManager.getConnection("jdbc:derby:memory:MyDerbyDB", p)) {
 
 			LOGGER.finest("=================== DERBY started =====================");
-			
-			{
-				Statement stmt = conn.createStatement();
+			try (Statement stmt = conn.createStatement()) {
 				String sql = "CREATE TABLE MYDERBYDB.MYTABLE (";
 				sql += " MONCHAMPSTEXTE VARCHAR(6) NOT NULL,";
 				sql += " MONCHAMPSCHAR CHAR(2) NOT NULL,";
@@ -61,12 +57,8 @@ public class UserRoleInformationJDBCTest {
 				sql += " )";
 				stmt.execute(sql);
 				stmt.execute("ALTER TABLE MYDERBYDB.MYTABLE ADD PRIMARY KEY (MONCHAMPSTEXTE, MONCHAMPSCHAR)");
-				stmt.close();
-			}
 
-			{
-				Statement stmt = conn.createStatement();
-				String sql = "CREATE TABLE MYDERBYDB.SECU_USER (";
+				sql = "CREATE TABLE MYDERBYDB.SECU_USER (";
 				sql += " USERNAME VARCHAR(255) NOT NULL,";
 				sql += " PASSWORD VARCHAR(255),";
 				sql += " MONCHAMPSDATETIME TIMESTAMP";
@@ -74,12 +66,8 @@ public class UserRoleInformationJDBCTest {
 				stmt.execute(sql);
 				stmt.execute("ALTER TABLE MYDERBYDB.SECU_USER ADD PRIMARY KEY (username)");
 				stmt.execute("INSERT INTO MYDERBYDB.SECU_USER (USERNAME, PASSWORD) VALUES ('myName', 'myPassword')");
-				stmt.close();
-			}
 
-			{
-				Statement stmt = conn.createStatement();
-				String sql = "CREATE TABLE MYDERBYDB.SECU_USER_ROLE (";
+				sql = "CREATE TABLE MYDERBYDB.SECU_USER_ROLE (";
 				sql += " USERNAME VARCHAR(255) NOT NULL,";
 				sql += " ROLENAME VARCHAR(255) NOT NULL,";
 				sql += " MONCHAMPSDATETIME TIMESTAMP";
@@ -90,7 +78,6 @@ public class UserRoleInformationJDBCTest {
 				stmt.execute("INSERT INTO MYDERBYDB.SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'admin')");
 				stmt.execute("INSERT INTO MYDERBYDB.SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'root')");
 				stmt.execute("INSERT INTO MYDERBYDB.SECU_USER_ROLE (USERNAME, ROLENAME) VALUES ('myName', 'dieu')");
-				stmt.close();
 			}
 
 			final ResultSet tables = conn.getMetaData().getTables(null, null,
@@ -100,7 +87,6 @@ public class UserRoleInformationJDBCTest {
 				tableNames.add(tables.getString("TABLE_NAME").toLowerCase());
 			}
 
-			conn.close();
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE,"Erreur pendant le chargement de DERBY.",e);
 			fail(e.getMessage());
