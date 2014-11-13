@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import junit.framework.Assert;
 
-import org.jobjects.jaas.HttpJaasLoginModuleTest;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

@@ -11,7 +11,6 @@ import javax.security.auth.login.Configuration.Parameters;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
-import org.jobjects.jaas.persistance.PersistanceSelectorTest;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
