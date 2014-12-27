@@ -29,7 +29,7 @@ import java.util.concurrent.Executor;
  * isClosed(), pour utiliser son etat au lieu de l'objet Connection reel. <br>
  * Copyright (c) 2002 JObjects
  * 
- * @author Micka�l Patron
+ * @author Mickaël Patron
  * @version 1.0
  */
 class JdbcConnection implements Connection {
@@ -45,14 +45,14 @@ class JdbcConnection implements Connection {
 	private JdbcPool pool;
 	/**
 	 * Le booleen qui permet de savoir si la connexion est fermee ou pas. Il est
-	 * initialise � false.
+	 * initialise à false.
 	 */
 	private boolean isClosed = false;
 
 	/**
-	 * Le constructeur obtient une reference � l'objet Connection reel et
+	 * Le constructeur obtient une reference à l'objet Connection reel et
 	 * l'enregistre dans la la variable d'instance realConn. Il obtient aussi
-	 * une reference � l'objet JdbcConnectionPool et l'enregistre dans la
+	 * une reference à l'objet JdbcConnectionPool et l'enregistre dans la
 	 * variable pool.
 	 * 
 	 * @param realConn
@@ -66,11 +66,11 @@ class JdbcConnection implements Connection {
 	}
 
 	/**
-	 * Informe la JdbcConnectionPool que la JdbcConnection est ferm�.
+	 * Informe la JdbcConnectionPool que la JdbcConnection est fermé.
 	 * 
 	 * @see #JdbcConnection(Connection realConn, JdbcPool pool)
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public void close() throws SQLException {
@@ -82,10 +82,10 @@ class JdbcConnection implements Connection {
 	 * Cette methode permet d'utiliser son etat au lieu de l'objet Connection
 	 * reel.
 	 * 
-	 * @return <code>true</code> si la Connection est accept�e,
+	 * @return <code>true</code> si la Connection est acceptée,
 	 *         <code>false</code> sinon
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public boolean isClosed() throws SQLException {
@@ -100,7 +100,7 @@ class JdbcConnection implements Connection {
 	 * Met en claire tous les warnings pour cet objet Connection.
 	 * 
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public void clearWarnings() throws SQLException {
@@ -116,7 +116,7 @@ class JdbcConnection implements Connection {
 	 * 
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public void commit() throws SQLException {
@@ -127,11 +127,11 @@ class JdbcConnection implements Connection {
 	}
 
 	/**
-	 * Cree un objet Statement pour envoyer des statements en SQL � la base de
+	 * Cree un objet Statement pour envoyer des statements en SQL à la base de
 	 * donnees.
 	 * 
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public Statement createStatement() throws SQLException {
@@ -150,7 +150,7 @@ class JdbcConnection implements Connection {
 	 * @see #isClosed()
 	 * @see #createStatement()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public Statement createStatement(int resultSetType, int resultSetConcurrency)
@@ -158,7 +158,7 @@ class JdbcConnection implements Connection {
 		if (isClosed) {
 			throw new SQLException("Pooled connection is closed");
 		}
-		// NF:Pas possible de c�er un statement autrement sous peine de probl�me
+		// NF:Pas possible de céer un statement autrement sous peine de problème
 		// d'affichage des accents.
 		return new JdbcStatement(realConn.createStatement(resultSetType,
 				resultSetConcurrency));
@@ -169,7 +169,7 @@ class JdbcConnection implements Connection {
 	 * 
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public boolean getAutoCommit() throws SQLException {
@@ -184,7 +184,7 @@ class JdbcConnection implements Connection {
 	 * 
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public String getCatalog() throws SQLException {
@@ -195,11 +195,11 @@ class JdbcConnection implements Connection {
 	}
 
 	/**
-	 * Recupere le MetaData en rapport � cette connexion � la base de donnees.
+	 * Recupere le MetaData en rapport à cette connexion à la base de donnees.
 	 * 
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public DatabaseMetaData getMetaData() throws SQLException {
@@ -215,7 +215,7 @@ class JdbcConnection implements Connection {
 	 * 
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public int getTransactionIsolation() throws SQLException {
@@ -226,11 +226,11 @@ class JdbcConnection implements Connection {
 	}
 
 	/**
-	 * Retourne le premier warning par appel � cette Connection.
+	 * Retourne le premier warning par appel à cette Connection.
 	 * 
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public SQLWarning getWarnings() throws SQLException {
@@ -247,7 +247,7 @@ class JdbcConnection implements Connection {
 	 * @return <code>true</code> si la connexion est en mode Lecture-seule,
 	 *         <code>false</code> sinon
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public boolean isReadOnly() throws SQLException {
@@ -264,7 +264,7 @@ class JdbcConnection implements Connection {
 	 *            la requete
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public String nativeSQL(String sql) throws SQLException {
@@ -282,7 +282,7 @@ class JdbcConnection implements Connection {
 	 *            la requete
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public CallableStatement prepareCall(String sql) throws SQLException {
@@ -305,7 +305,7 @@ class JdbcConnection implements Connection {
 	 * @see #isClosed()
 	 * @see #prepareCall(String sql)
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public CallableStatement prepareCall(String sql, int resultSetType,
@@ -319,13 +319,13 @@ class JdbcConnection implements Connection {
 
 	/**
 	 * Cree un objet PreparedStatement pour envoyer des SQL statements
-	 * parametises � la base de donnees.
+	 * parametises à la base de donnees.
 	 * 
 	 * @param sql
 	 *            la requete
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public PreparedStatement prepareStatement(String sql) throws SQLException {
@@ -347,7 +347,7 @@ class JdbcConnection implements Connection {
 	 *            la Concurrency
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public PreparedStatement prepareStatement(String sql, int resultSetType,
@@ -366,7 +366,7 @@ class JdbcConnection implements Connection {
 	 * 
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public void rollback() throws SQLException {
@@ -382,7 +382,7 @@ class JdbcConnection implements Connection {
 	 * @param autoCommit
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public void setAutoCommit(boolean autoCommit) throws SQLException {
@@ -399,7 +399,7 @@ class JdbcConnection implements Connection {
 	 * @param catalog
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public void setCatalog(String catalog) throws SQLException {
@@ -410,13 +410,13 @@ class JdbcConnection implements Connection {
 	}
 
 	/**
-	 * Met cette connexion en mode lecture-seule pour donner � la base de
+	 * Met cette connexion en mode lecture-seule pour donner à la base de
 	 * donnees la possibilite d'optimisations.
 	 * 
 	 * @param readOnly
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public void setReadOnly(boolean readOnly) throws SQLException {
@@ -427,14 +427,14 @@ class JdbcConnection implements Connection {
 	}
 
 	/**
-	 * Permet de changer le niveau de l'isolation de la transaction � celui
+	 * Permet de changer le niveau de l'isolation de la transaction à celui
 	 * donne.
 	 * 
 	 * @param level
 	 *            le niveau
 	 * @see #isClosed()
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public void setTransactionIsolation(int level) throws SQLException {
@@ -448,7 +448,7 @@ class JdbcConnection implements Connection {
 	 * Recupere l'objet type map associe avec cette connexion.
 	 * 
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public Map<String, Class<?>> getTypeMap() throws SQLException {
@@ -462,7 +462,7 @@ class JdbcConnection implements Connection {
 	 * Installe le type map donne comme le type map pour cette connexion.
 	 * 
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	@Override
 	public void setTypeMap(Map<String, Class<?>> map) throws SQLException {

@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  * </p>
  * <p>
  * Un objet JdbcPool porte un nom utilise par les clients. Il represente un pool
- * de connexions � une base de donnees, identifiee par une URL JDBC. <br>
+ * de connexions à une base de donnees, identifiee par une URL JDBC. <br>
  * Une URL JDBC indique trois elements :<br>
  * <li>Le protocole(jdbc),</li>
  * <li>Le pilote (par exemple, odbc, idb, oracle),</li>
@@ -40,7 +40,7 @@ import java.util.logging.Logger;
  * <p>
  * Les autres attributs de ConnectionPoolsont les suivants :<br>
  * <li>Nombre maximal de connexions,</li>
- * <li>Nombre de connexions � ouvrir � la creation du pool,</li>
+ * <li>Nombre de connexions à ouvrir à la creation du pool,</li>
  * <li>Delai (en secondes) pendant lequel l'utilisateur attend la disponibilite
  * d'une connexion,</li>
  * <li>Informations relatives au type des messages du journal qui vous
@@ -48,17 +48,17 @@ import java.util.logging.Logger;
  * </p>
  * <p>
  * JdbcPool stocke les objets JDBC Connection accessibles aux clients dans un
- * vecteur appel� freeConnections. Cette classe doit aussi garder une trace du
- * nombre de connexions du pool. Cela lui permet de determiner � quel moment le
- * nombre maximal de connexions est atteint. A cet effet, elle a recours � une
+ * vecteur appelé freeConnections. Cette classe doit aussi garder une trace du
+ * nombre de connexions du pool. Cela lui permet de determiner à quel moment le
+ * nombre maximal de connexions est atteint. A cet effet, elle a recours à une
  * simple variable de type int checkedOut. Le nombre de connexions contenues
- * dans le pool correspond � la somme de la valeur de checkedOut et du nombre
+ * dans le pool correspond à la somme de la valeur de checkedOut et du nombre
  * d'elementsdu vecteur freeConnection.
  * </p>
  * <br>
  * Copyright (c) 2002 JObjects
  * 
- * @author Micka�l Patron
+ * @author Mickaël Patron
  * @version 1.0
  */
 public class JdbcPool {
@@ -79,8 +79,8 @@ public class JdbcPool {
 	 */
 	private String password;
 	/**
-	 * Le nombre maximal de connexions contenues dans le pool, 0 correspond � un
-	 * nombre illimit�
+	 * Le nombre maximal de connexions contenues dans le pool, 0 correspond à un
+	 * nombre illimité
 	 */
 	private int maxConns;
 	/**
@@ -171,7 +171,7 @@ public class JdbcPool {
 	 * @see JdbcConnection
 	 * @return <code>Connection</code>
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	public Connection getConnection() throws SQLException {
 		LOGGER.log(Level.FINER, "Request for connection received");
@@ -190,8 +190,8 @@ public class JdbcPool {
 	 * connexions. Pour cela nous en appelons la methode privee
 	 * getPooledConnection(). Si aucune connexion n'est disponible et que le
 	 * nombre maximal est atteint, nous attendons qu'un client execute dans un
-	 * autre thread retourne un objet Connection au pool. Un appel � la methode
-	 * wait declenche une interruption, jusqu'� ce que l'un des evenements
+	 * autre thread retourne un objet Connection au pool. Un appel à la methode
+	 * wait declenche une interruption, jusqu'é ce que l'un des evenements
 	 * suivents se produise :<br>
 	 * <li>le delai indique expire</li> <li>Un autre thread appelle la methode
 	 * notify ou notifyAll sur l'objet que nous attendons, ce qui genere une
@@ -209,7 +209,7 @@ public class JdbcPool {
 	 * @see #isConnectionOK(Connection conn)
 	 * @return une connexion<code>Connection</code>
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	private synchronized Connection getConnection(long timeout)
 			throws SQLException {
@@ -226,13 +226,13 @@ public class JdbcPool {
 			}
 			remaining = timeout - (System.currentTimeMillis() - startTime);
 			if (remaining <= 0) {
-				// Timeout a expir�
+				// Timeout a expiré
 				LOGGER.log(Level.FINER, "Time-out while waiting for connection");
 				throw new SQLException("getConnection() timed-out");
 			}
 		}
 
-		// V�rifie si la connexion est encore OK
+		// Vérifie si la connexion est encore OK
 		if (!isConnectionOK(conn)) {
 			// Si ce n'est pas le cas, essayer encore avec le temps restant
 			LOGGER.log(Level.WARNING,
@@ -258,7 +258,7 @@ public class JdbcPool {
 	 * @param conn
 	 *            la connexion.
 	 * @see JdbcConnection#isClosed()
-	 * @return <code>true</code> si la Connection est accept�e,
+	 * @return <code>true</code> si la Connection est acceptée,
 	 *         <code>false</code> sinon
 	 */
 	private boolean isConnectionOK(Connection conn) {
@@ -293,12 +293,12 @@ public class JdbcPool {
 	 * 
 	 * @return <code>Connection</code> un objet Connection
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	private Connection getPooledConnection() throws SQLException {
 		Connection conn = null;
 		if (freeConnections.size() > 0) {
-			// Prend la premi�re connexion dans le Vecteur.
+			// Prend la première connexion dans le Vecteur.
 			conn = (Connection) freeConnections.firstElement();
 			freeConnections.removeElementAt(0);
 		} else if (maxConns == 0 || checkedOut < maxConns) {
@@ -316,7 +316,7 @@ public class JdbcPool {
 	 * @see JdbcPoolManager#getConnection(String)
 	 * @return une connexion<code>Connection</code>
 	 * @throws SQLException
-	 *             en cas d'erreur d'acces � la base de donnees.
+	 *             en cas d'erreur d'acces à la base de donnees.
 	 */
 	private Connection newConnection() throws SQLException {
 		Connection conn = null;
@@ -335,7 +335,7 @@ public class JdbcPool {
 	}
 
 	/**
-	 * Cette methode ajoute l'objet Connection retourne � la fin du vecteur
+	 * Cette methode ajoute l'objet Connection retourne à la fin du vecteur
 	 * freeConnections et decremente le compteur des connexions reservees.
 	 * 
 	 * <br>
@@ -345,7 +345,7 @@ public class JdbcPool {
 	 *            l'objet Connection
 	 */
 	public synchronized void freeConnection(Connection conn) {
-		// Met la connexion � la fin du Vecteur.
+		// Met la connexion à la fin du Vecteur.
 		freeConnections.addElement(conn);
 		checkedOut--;
 		notifyAll();
@@ -357,7 +357,7 @@ public class JdbcPool {
 	 * liberer en douceur toutes les ressources du pool. JdbcPoolManager appelle
 	 * la methode release() lorsque le dernier client annonce qu'il n'est plus
 	 * interesse par les services du pool de connexions. Et la methode release()
-	 * parcourt le vecteur freeConnections et appelle la methode close() �
+	 * parcourt le vecteur freeConnections et appelle la methode close() é
 	 * chaque objet Connection. Une fois les objets Connection fermes, ils sont
 	 * suprimes du vecteur.
 	 * 

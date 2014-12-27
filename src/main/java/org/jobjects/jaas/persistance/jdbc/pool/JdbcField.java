@@ -1,9 +1,9 @@
 package org.jobjects.jaas.persistance.jdbc.pool;
 
 /**
- * Cette classe donne des informations du dictionaire de la base de donn�es.
+ * Cette classe donne des informations du dictionaire de la base de données.
  * @see org.jobjects.dao.jdbc.v2
- * @author Micka�l PATRON
+ * @author Mickaël PATRON
  * @version $Id: ConnectionInfo.java,v 1.0 2001/05/22 21:10:35 curcuru Exp $
  */
 

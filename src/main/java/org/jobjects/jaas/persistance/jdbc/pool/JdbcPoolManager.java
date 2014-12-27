@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * La classe JdbcPoolManager permet d'avoir recours � plusieurs pools de
+ * La classe JdbcPoolManager permet d'avoir recours à plusieurs pools de
  * connexions.
  * 
  * <p>
@@ -26,19 +26,19 @@ import java.util.logging.Logger;
  * La creation d'un objet ralentit toujours les traitements, car il faut allouer
  * la memoire et initialiser l'objet. De plus, on doit conserver la trace de
  * l'objet, et de le detruire une fois qu'il devient inutile. C'est pour ces
- * raisons que l'on doit creer un pool de ressources. La r�utilisation d'un
+ * raisons que l'on doit creer un pool de ressources. La réutilisation d'un
  * groupe d'objets est appelee pool d'objets. Elle fournit l'interface utilise
  * par les applications client et effectue les les operations suivantes :
  * </p>
  * <p>
  * <li>chargement et enregistrement des pilotes JDBC,</li>
- * <li>creation d'objets JdbcConnectionPool � partir du contenu d'un fichier de
+ * <li>creation d'objets JdbcConnectionPool à partir du contenu d'un fichier de
  * prorietes,</li>
  * <li>correspondance entre noms de pools de connexions et objets
  * JdbcConnectionPool,</li>
  * <li>envoie des requetes client dans un objet JdbcConnectionPool nomme</li>
  * <li>suivi des clients des pools de connexions, en vue de l'arret en douceur
- * des pools lorsque le dernier client � termine.</li>
+ * des pools lorsque le dernier client à termine.</li>
  * </p>
  * <br>
  * <p>
@@ -46,12 +46,12 @@ import java.util.logging.Logger;
  * </p>
  * <br>
  * <p>
- * JdbcPoolManager obtient les informations relatives aux pilotes JDBC �
- * utiliser et aux pools � creer en consultant le fichier de proprietes
+ * JdbcPoolManager obtient les informations relatives aux pilotes JDBC é
+ * utiliser et aux pools à creer en consultant le fichier de proprietes
  * db.properties. Celui doit etre situe dans le CLASSPATH du processus serveur.
  * <br>
  * db.properties, au format Java Properties, contient des paires cle-valeur
- * definissant les pools de connexions, ainsi que des proprietes communes �
+ * definissant les pools de connexions, ainsi que des proprietes communes é
  * ceux-ci.Ces proprietes sont:
  * </p>
  * <li>drivers : Liste de noms de classes de pilotes JDBC, separes par un espace
@@ -76,12 +76,12 @@ import java.util.logging.Logger;
  * </tr>
  * <tr>
  * <td><poolname>.maxconns</td>
- * <td>Le nombre maximal de connexions contenues dans le pool, 0 correspond � un
- * nombre illimit�</td>
+ * <td>Le nombre maximal de connexions contenues dans le pool, 0 correspond à un
+ * nombre illimité</td>
  * </tr>
  * <tr>
  * <td><poolname>.initconns</td>
- * <td>Le nombre de connexions initiales � ouvrir pour le pool.</td>
+ * <td>Le nombre de connexions initiales à ouvrir pour le pool.</td>
  * </tr>
  * <tr>
  * <td><poolname>.logintimeout</td>
@@ -92,7 +92,7 @@ import java.util.logging.Logger;
  * </p>
  * <br>
  * <p>
- * Toutes les proprietes, � l'exception de url, sont facultatives. Le nom
+ * Toutes les proprietes, à l'exception de url, sont facultatives. Le nom
  * d'utilisateur et le mot de passe associe doivent etre valide pour la base de
  * donnees definies par l'URL.
  * </p>
@@ -146,7 +146,7 @@ import java.util.logging.Logger;
  * JdbcPoolManager pdb = JdbcPoolManager.getInstance(); <br>
  * <br>
  * <font size=-1> <b><i>// Recupere la connexion avec le nom du pool en
- * parametre et envoie l'appel � l'objet JdbcConnectionPool correspondant. </i>
+ * parametre et envoie l'appel à l'objet JdbcConnectionPool correspondant. </i>
  * </b> </font> <br>
  * Connection connection=pdb.getConnection(databaseName); <br>
  * <br>
@@ -154,7 +154,7 @@ import java.util.logging.Logger;
  * try <br>
  * {<br>
  * &nbsp;&nbsp;&nbsp; <font size=-1> <b><i>// Cree un objet Statement pour
- * envoyer des statements en SQL � la base de donnees. </i> </b> </font> <br>
+ * envoyer des statements en SQL à la base de donnees. </i> </b> </font> <br>
  * &nbsp;&nbsp;&nbsp;Statement stmt = connection.createStatement(); <br>
  * &nbsp;&nbsp;&nbsp;try <br>
  * &nbsp;&nbsp;&nbsp;{ log.debug(SQL); <br>
@@ -220,7 +220,7 @@ import java.util.logging.Logger;
  * <br>
  * Copyright (c) 2002 JObjects
  * 
- * @author Micka�l Patron
+ * @author Mickaël Patron
  * @version 1.0
  */
 
@@ -267,7 +267,7 @@ public class JdbcPoolManager {
 
 	/**
 	 * Renvoie la seule instance de la classe. Les clients de JdbcPoolManager
-	 * appellent cette methode pour obtenir une reference � l'instance.
+	 * appellent cette methode pour obtenir une reference à l'instance.
 	 * 
 	 * <br>
 	 * Cette methode est de type <code>synchronized</code>.
@@ -320,11 +320,11 @@ public class JdbcPoolManager {
 	 * ceux qui se terminent par .url. Lorsque nous en trouvons, nous extrayons
 	 * le nom du pool et lisons la premiere propriete du pool de connexions
 	 * correspondant. Nous procedons ainsi pour toutes les proprietes. exception
-	 * g�r� : NumberFormatException <br>
+	 * géré : NumberFormatException <br>
 	 * si erreur dans la valeur du nombre maximum de connexions <br>
 	 * si erreur dans la valeur initiale des connexions <br>
 	 * si erreur dans la valeur du temps de login <br>
-	 * exception g�r� : IOException S'il y a une erreur, c'est un probleme sur
+	 * exception géré : IOException S'il y a une erreur, c'est un probleme sur
 	 * props.
 	 */
 	private void createPools() {
@@ -384,7 +384,7 @@ public class JdbcPoolManager {
 
 	/**
 	 * Recupere la connexion avec le nom du pool en parametre et envoie l'appel
-	 * � l'objet JdbcConnectionPool correspondant. Ensuite la methode publique
+	 * à l'objet JdbcConnectionPool correspondant. Ensuite la methode publique
 	 * getConnection() dans JdbcConnectionPool permet de reserver une connexion.
 	 * Elle tente de retourner un objet Connection par l'appel d'une methode
 	 * privee surchargee, getConnection(), en transmettant en parametres le
@@ -394,7 +394,7 @@ public class JdbcPoolManager {
 	 * en appelons la methode privee getPooledConnection(). Si aucune connexion
 	 * n'est disponible et que le nombre maximal est atteint, nous attendons
 	 * qu'un client execute dans un autre thread retourne un objet Connection au
-	 * pool. Un appel � la methode wait declenche une interruption, jusqu'� ce
+	 * pool. Un appel à la methode wait declenche une interruption, jusqu'é ce
 	 * que l'un des evenements suivents se produise : le delai indique expire ou
 	 * un autre thread appelle la methode notify ou notifyAll sur l'objet que
 	 * nous attendons, ce qui genere une exception InterruptedException. Elle
@@ -423,9 +423,9 @@ public class JdbcPoolManager {
 
 	/**
 	 * Libere la connexion avec le nom du pool et la connexion en parametres
-	 * envoie l'appel � l'objet JdbcConnectionPool correspondant. Au lieu de
+	 * envoie l'appel à l'objet JdbcConnectionPool correspondant. Au lieu de
 	 * retourner l'objet Connection du pool, nous creons un objet JdbcConnection
-	 * que nous envoyons � l'application client. Ensuite nous remplacons
+	 * que nous envoyons à l'application client. Ensuite nous remplacons
 	 * freeConnection() par wrapperClosed().
 	 * 
 	 * @param name

@@ -13,8 +13,8 @@ import java.util.Vector;
 import java.util.Map.Entry;
 
 /**
- * Cette classe donne des informations du dictionaire de la base de donn�es.
- * @author Micka�l PATRON
+ * Cette classe donne des informations du dictionaire de la base de données.
+ * @author Mickaël PATRON
  * @version $Id: JdbcInfo.java,v 1.0 2001/05/22 21:10:35 curcuru Exp $
  */
 
@@ -26,8 +26,8 @@ public class JdbcInfo
 
  /**
    * Constructeur.
-   * @param conn est la connection vers la base de donn�e.
-   * @param schemaName est le nom du schema de la base de donn�e.
+   * @param conn est la connection vers la base de donnée.
+   * @param schemaName est le nom du schema de la base de donnée.
    */
   public JdbcInfo(Connection conn, String schemaName) throws SQLException
   {
@@ -38,11 +38,11 @@ public class JdbcInfo
 
  /**
    * La liste des tables parentes de la table
-   * pass�e en param�tre. {@link #getChildTables(String) getComponentAt}
+   * passée en paramètre. {@link #getChildTables(String) getComponentAt}
    * @param tableName est le nom de la table
-   * @return un Vector contenant le nom des tables sous la forme d'�l�ments
+   * @return un Vector contenant le nom des tables sous la forme d'éléments
    * de type String
-   * @throws SQLException peut �tre lanc� pour un probl�me de connexion.
+   * @throws SQLException peut être lancé pour un problème de connexion.
    */
   public List<String> getParentTables(String tableName) throws SQLException
   {
@@ -61,11 +61,11 @@ public class JdbcInfo
 
  /**
    * Liste des tables enfantes de la table
-   * pass�e en param�tre.
+   * passée en paramètre.
    * @param tableName est le nom de la table
-   * @return un Vector contenant le nom des tables sous la forme d'�l�ments
+   * @return un Vector contenant le nom des tables sous la forme d'éléments
    * de type String
-   * @throws SQLException peut �tre lanc� pour un probl�me de connexion.
+   * @throws SQLException peut être lancé pour un problème de connexion.
    */
   public List<String> getChildTables(String tableName) throws SQLException
   {
@@ -85,9 +85,9 @@ public class JdbcInfo
  /**
    * Liste des noms des champs de la clef primaire
    * @param tableName est le nom de la table
-   * @return un Vector contenant le nom des champs sous la forme d'�l�ments
+   * @return un Vector contenant le nom des champs sous la forme d'éléments
    * de type String
-   * @throws SQLException peut �tre lanc� pour un probl�me de connexion.
+   * @throws SQLException peut être lancé pour un problème de connexion.
    */
   public List<String> getPrimaryColumns(String tableName) throws SQLException
   {
@@ -108,9 +108,9 @@ public class JdbcInfo
    * Liste des noms des champs de la clef primaire
    * qui provienneent des tables parentes.
    * @param tableName est le nom de la table
-   * @return un Vector contenant le nom des champs sous la forme d'�l�ments
+   * @return un Vector contenant le nom des champs sous la forme d'éléments
    * de type String
-   * @throws SQLException peut �tre lanc� pour un probl�me de connexion.
+   * @throws SQLException peut être lancé pour un problème de connexion.
    */
   public List<String> getImportedPrimaryColumns(String tableName) throws SQLException
   {
@@ -130,9 +130,9 @@ public class JdbcInfo
  /**
    * Liste des noms des champs nom null.
    * @param tableName est le nom de la table
-   * @return un Vector contenant le nom des tables sous la forme d'�l�ments
+   * @return un Vector contenant le nom des tables sous la forme d'éléments
    * de type String
-   * @throws SQLException peut �tre lanc� pour un probl�me de connexion.
+   * @throws SQLException peut être lancé pour un problème de connexion.
    */
   public List<String> getMandatoryColumns(String tableName) throws SQLException
   {
@@ -159,11 +159,11 @@ public class JdbcInfo
 
  /**
    * Liste des noms des champs de la clef primaire
-   * qui sont propre � la table et qui ne font pas r�ference aux tables parentes.
+   * qui sont propre à la table et qui ne font pas réference aux tables parentes.
    * @param tableName est le nom de la table
-   * @return un Vector contenant le nom des tables sous la forme d'�l�ments
+   * @return un Vector contenant le nom des tables sous la forme d'éléments
    * de type String
-   * @throws SQLException peut �tre lanc� pour un probl�me de connexion.
+   * @throws SQLException peut être lancé pour un problème de connexion.
    */
   public List<String> getOwnPrimaryColumns(String tableName) throws SQLException
   {
@@ -208,9 +208,9 @@ public class JdbcInfo
  /**
    * Liste des noms des champs.
    * @param tableName est le nom de la table
-   * @return un Vector contenant le nom des champs sous la forme d'�l�ments
+   * @return un Vector contenant le nom des champs sous la forme d'éléments
    * de type String
-   * @throws SQLException peut �tre lanc� pour un probl�me de connexion.
+   * @throws SQLException peut être lancé pour un problème de connexion.
    */
   public List<String> getColumnNames(String tableName) throws SQLException
   {
@@ -229,9 +229,9 @@ public class JdbcInfo
 
  /**
    * Liste des noms des tables.
-   * @return un Vector contenant le nom des tables sous la forme d'�l�ments
+   * @return un Vector contenant le nom des tables sous la forme d'éléments
    * de type String
-   * @throws SQLException peut �tre lanc� pour un probl�me de connexion.
+   * @throws SQLException peut être lancé pour un problème de connexion.
    */
   public List<String> getTables() throws SQLException
   {
@@ -250,7 +250,7 @@ public class JdbcInfo
 
  /**
    * Affiche sur la sortie standard le contenu du RecordSet.
-   * @param rs est le RecordSet � Afficher
+   * @param rs est le RecordSet à Afficher
    * @return rien.
    */
   public static void Affiche(ResultSet rs)
@@ -313,9 +313,9 @@ public class JdbcInfo
  /**
    * Liste des noms des champs.
    * @param tableName est le nom de la table
-   * @return un Vector contenant les champs de la tables sous la forme d'�l�ments
+   * @return un Vector contenant les champs de la tables sous la forme d'éléments
    * de type ConnectionField
-   * @throws SQLException peut �tre lanc� pour un probl�me de connexion.
+   * @throws SQLException peut être lancé pour un problème de connexion.
    */
   public List<JdbcField> getColumns(String tableName) throws SQLException
   {

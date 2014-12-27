@@ -6,8 +6,8 @@ import java.util.Iterator;
 import java.util.Properties;
 
 /**
- * Cette classe donne des informations du dictionaire de la base de donn�es.
- * @author Micka�l PATRON
+ * Cette classe donne des informations du dictionaire de la base de données.
+ * @author Mickaël PATRON
  * @version $Id: JdbcInfo.java,v 1.0 2001/05/22 21:10:35 curcuru Exp $
  */
 
